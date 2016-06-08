@@ -1,7 +1,8 @@
+import core.PasswordGenerator
 import org.junit.Test as test
 import org.junit.Assert.*
 import org.hamcrest.CoreMatchers.*
-import PasswordGenerator.Charset.*
+import core.PasswordGenerator.Charset.*
 
 class PasswordGeneratorTest {
     @test fun testGenerationReturnsPasswordOfSpecifiedSize() {

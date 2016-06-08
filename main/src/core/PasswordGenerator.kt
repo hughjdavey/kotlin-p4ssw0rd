@@ -1,4 +1,6 @@
-import PasswordGenerator.Charset.*
+package core
+
+import core.PasswordGenerator.Charset.*
 import java.util.Random
 
 object PasswordGenerator {
@@ -19,9 +21,9 @@ object PasswordGenerator {
 
 fun main(args: Array<String>) {
     println("hello")
-    println( PasswordGenerator.Charset.ALPHA.chars.joinToString(", ") )
-    println( PasswordGenerator.Charset.NUMBER.chars.joinToString(", ") )
-    println( PasswordGenerator.Charset.SYMBOL.chars.joinToString(", ") )
+    println( ALPHA.chars.joinToString(", ") )
+    println( NUMBER.chars.joinToString(", ") )
+    println( SYMBOL.chars.joinToString(", ") )
     for (i in 1..10)
         println (PasswordGenerator.generatePassword(charsets = arrayOf(ALPHA, NUMBER, SYMBOL)).joinToString(""))
 }
