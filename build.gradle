@@ -28,5 +28,6 @@ dependencies {
     compile 'no.tornado:tornadofx:1.4.8'
 }
 sourceSets {
-    main.java.srcDirs += 'src/main/kotlin'
+    main.java.srcDirs += 'main/src'
+    test.java.srcDirs += 'test/src'
 }
