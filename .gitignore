@@ -4,3 +4,4 @@ gradle/
 gradlew*
 *.iml
 build/
+database/
