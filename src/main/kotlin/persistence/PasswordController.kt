@@ -17,6 +17,12 @@ class PasswordController {
         return passwordList
     }
 
+    fun getPasswordList(search: String): ObservableList<PasswordEntity> {
+        if (!passwordList.isEmpty()) passwordList.clear()
+        passwordList = FXCollections.observableList(passwordService.listPasswords(search))
+        return passwordList
+    }
+
     fun removePassword(id: Long) {
         passwordService.removePassword(id)
     }

@@ -3,7 +3,7 @@ package persistence
 class PasswordService {
     init {
         // FOR DEVELOPMENT PURPOSES
-        initTestData()
+        //initTestData()
     }
 
     fun addPassword(password: PasswordEntity) {
@@ -15,12 +15,25 @@ class PasswordService {
     }
 
     fun listPasswords(): List<PasswordEntity> {
-        var passwords = emptyList<PasswordEntity>()
+        val passwords: List<PasswordEntity>
         val session = PasswordStorage.openSession();
         session.beginTransaction()
         passwords = session.createQuery("from PasswordEntity").list() as List<PasswordEntity>;
         session.transaction.commit();
         session.close();
+        return passwords
+    }
+
+    fun listPasswords(search: String): List<PasswordEntity> {
+        val passwords: List<PasswordEntity>
+        val session = PasswordStorage.openSession();
+        session.beginTransaction()
+        passwords = session.createQuery(
+                "from PasswordEntity p where p.name like \'%$search%\' or p.username like \'%$search%\' or p.email like \'%$search%\' or p.url like \'%$search%\'")
+                .list() as List<PasswordEntity>;
+        session.transaction.commit();
+        session.close();
+        passwords.forEach { println(it) }
         return passwords
     }
 
