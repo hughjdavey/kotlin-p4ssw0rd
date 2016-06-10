@@ -1,7 +1,12 @@
 package gui
 
 import javafx.scene.control.TextField
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCodeCombination
+import javafx.scene.input.KeyCombination
 import org.controlsfx.control.Notifications
+import org.controlsfx.glyphfont.FontAwesome
+import org.controlsfx.glyphfont.FontAwesome.Glyph.*
 import tornadofx.*
 
 class EditPasswordScreen : View() {
@@ -15,6 +20,14 @@ class EditPasswordScreen : View() {
 
     init {
         with (root) {
+            menubar {
+                menu("Navigation") {
+                    menuitem("Home", KeyCodeCombination(KeyCode.H, KeyCombination.SHORTCUT_DOWN), FontAwesome().create(HOME.char)) {
+                        appController.showHomeScreen()
+                    }
+                }
+            }
+
             minHeight = PasswordApp.APP_HEIGHT
             minWidth = PasswordApp.APP_WIDTH
 

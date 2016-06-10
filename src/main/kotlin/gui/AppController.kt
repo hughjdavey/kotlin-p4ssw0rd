@@ -1,13 +1,15 @@
 package gui
 
 import javafx.application.Platform
+import javafx.collections.ObservableList
+import persistence.PasswordController
 import persistence.PasswordEntity
 import tornadofx.Controller
 import tornadofx.FX
 
 /* based on LoginController from tornadofx samples */
 class AppController : Controller() {
-    val allPasswordsScreen: AllPasswordsScreen by inject()
+    val viewPasswordsScreen: ViewPasswordsScreen by inject()
     val changePasswordScreen: ChangePasswordScreen by inject()
     val editScreen: EditPasswordScreen by inject()
     val homeScreen: HomeScreen by inject()
@@ -38,8 +40,7 @@ class AppController : Controller() {
         }
     }
 
-    var passwordToEdit: PasswordEntity? = null;
-
+    private var passwordToEdit: PasswordEntity? = null;
     /* returns a password object to edit if one has been selected (otherwise we are making a new password and so return an empty one) */
     fun getEditPassword(): GUIPassword {
         var password = GUIPassword()
@@ -48,6 +49,22 @@ class AppController : Controller() {
             passwordToEdit = null
         }
         return password
+    }
+
+    var lastSearch: String = ""
+    val passwordController = PasswordController()
+    /* returns list of passwords matched by the last search, or all of them if a search was not performed */
+    fun getPasswordSearchResults(): ObservableList<PasswordEntity> {
+        var passwords: ObservableList<PasswordEntity>
+        if (lastSearch.isNotEmpty()) {
+            passwords = passwordController.getPasswordList(lastSearch)
+            lastSearch = ""
+            isSearch = true
+        } else {
+            passwords = passwordController.getPasswordList()
+            isSearch = false
+        }
+        return passwords
     }
 
     fun showEditPasswordScreen(password: PasswordEntity? = null) {
@@ -66,14 +83,15 @@ class AppController : Controller() {
         loginScreen.title = title + " Password"
     }
 
-    fun showViewAllScreen() {
-        if (FX.primaryStage.scene.root != allPasswordsScreen.root) {
-            FX.primaryStage.scene.root = allPasswordsScreen.root
+    var isSearch: Boolean = false
+    fun showViewPasswordsScreen() {
+        if (FX.primaryStage.scene.root != viewPasswordsScreen.root) {
+            FX.primaryStage.scene.root = viewPasswordsScreen.root
             FX.primaryStage.sizeToScene()
             FX.primaryStage.centerOnScreen()
         }
 
-        loginScreen.title = "All Passwords"
+        loginScreen.title = if (isSearch) "Search Results" else "All Passwords"
     }
 
     fun showSearchScreen() {
@@ -84,6 +102,10 @@ class AppController : Controller() {
         }
 
         loginScreen.title = "Find Passwords"
+
+        Platform.runLater {
+            searchScreen.searchField.requestFocus()
+        }
     }
 
     fun showHomeScreen() {
@@ -117,6 +139,15 @@ class AppController : Controller() {
             } else {
                 showLoginScreen("Login failed. Please try again.", true)
             }
+        }
+    }
+
+    fun doSearch(search: String) {
+        runAsync {
+            lastSearch = search
+        } ui {
+            searchScreen.clear()
+            showViewPasswordsScreen()
         }
     }
 

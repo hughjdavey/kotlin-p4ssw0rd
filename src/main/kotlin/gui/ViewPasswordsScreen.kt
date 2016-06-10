@@ -1,19 +1,16 @@
 package gui
-import javafx.collections.FXCollections
 import javafx.event.Event
 import javafx.scene.control.TableView
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyEvent
-import javafx.scene.input.MouseEvent
+import javafx.scene.input.*
 import javafx.scene.layout.BorderPane
+import org.controlsfx.glyphfont.FontAwesome
 import persistence.PasswordEntity
-import persistence.PasswordStorage
 import tornadofx.*
 
-class AllPasswordsScreen : View() {
+class ViewPasswordsScreen : View() {
     override val root = BorderPane()
     val appController: AppController by inject()
-    val passwords = PasswordStorage.samplePasswordList();
+    val passwordList = appController.getPasswordSearchResults()
 
     /* allows user press the enter key on a row to edit that password */
     val enterKeyHandler = { evt: KeyEvent ->
@@ -31,11 +28,19 @@ class AllPasswordsScreen : View() {
 
     init {
         with(root) {
+            menubar {
+                menu("Navigation") {
+                    menuitem("Home", KeyCodeCombination(KeyCode.H, KeyCombination.SHORTCUT_DOWN), FontAwesome().create(FontAwesome.Glyph.HOME.char)) {
+                        appController.showHomeScreen()
+                    }
+                }
+            }
+
             minHeight = PasswordApp.APP_HEIGHT
             minWidth = PasswordApp.APP_WIDTH
 
             center {
-                tableview(FXCollections.observableArrayList<PasswordEntity>(passwords)) {
+                tableview(passwordList) {
                     column("Name", PasswordEntity::name)
                     column("Password", PasswordEntity::password)
                     column("Username", PasswordEntity::username)

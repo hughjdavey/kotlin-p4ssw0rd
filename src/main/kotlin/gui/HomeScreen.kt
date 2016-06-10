@@ -41,7 +41,7 @@ class HomeScreen : View() {
 
                     button("View All") {
                         setOnAction {
-                            appController.showViewAllScreen()
+                            appController.showViewPasswordsScreen()
                         }
                         setOnKeyPressed(PasswordApp.enterKeyHandler)
                     }

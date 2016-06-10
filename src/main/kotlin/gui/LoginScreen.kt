@@ -35,7 +35,6 @@ class LoginScreen : View() {
                     }
                 }
             }
-
         }
     }
 
