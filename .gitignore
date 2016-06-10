@@ -5,3 +5,4 @@ gradlew*
 *.iml
 build/
 database/
+conf/
