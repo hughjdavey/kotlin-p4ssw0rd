@@ -4,3 +4,5 @@ Desktop password manager written in Kotlin
 Backed by an H2 database with a Hibernate layer, with torandofx (Kotlin JavaFX DSL/wrapper) on the frontend
 
 Default password to login is 'changeme'
+
+WORK IN PROGRESS! Adding passwords is not properly supported
