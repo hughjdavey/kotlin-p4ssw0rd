@@ -1,6 +1,6 @@
 package core
 
-class Password {
+class PasswordMain {
 }
 
 fun main(args: Array<String>) {
