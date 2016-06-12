@@ -30,5 +30,6 @@
         <property name="hbm2ddl.auto">update</property>
 
         <mapping class="persistence.PasswordEntity"/>
+        <mapping class="persistence.SettingsEntity"/>
     </session-factory>
 </hibernate-configuration>

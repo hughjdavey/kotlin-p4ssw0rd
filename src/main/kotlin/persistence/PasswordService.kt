@@ -6,6 +6,44 @@ class PasswordService {
         //initTestData()
     }
 
+    private fun getSettings(): List<SettingsEntity> {
+        val settings: List<SettingsEntity>
+        val session = PasswordStorage.openSession()
+        session.beginTransaction()
+        settings = session.createQuery("from SettingsEntity").list() as List<SettingsEntity>
+        session.transaction.commit()
+        session.close()
+        return settings
+    }
+
+    private fun getSetting(key: String): SettingsEntity? {
+        return getSettings().find { it.key == key }
+    }
+
+    private fun getSettingValue(key: String): String? {
+        return getSettings().find { it.key == key }?.value
+    }
+
+    private fun saveSetting(setting: SettingsEntity) {
+        val session = PasswordStorage.openSession()
+        session.beginTransaction()
+        session.saveOrUpdate(setting)
+        session.transaction.commit()
+        session.close()
+    }
+
+    fun getAppPassword(): String {
+        return getSettingValue(SettingsEntity.appPasswordKey) ?: SettingsEntity.defaultPassword
+    }
+
+    fun setAppPassword(appPassword: String) {
+        val passwordSetting = getSetting(SettingsEntity.appPasswordKey) ?: SettingsEntity()
+        passwordSetting.key = SettingsEntity.appPasswordKey
+        passwordSetting.value = appPassword
+        saveSetting(passwordSetting)
+    }
+
+
     fun addPassword(password: PasswordEntity) {
         val session = PasswordStorage.openSession();
         session.beginTransaction()

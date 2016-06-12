@@ -9,11 +9,13 @@ import java.nio.file.Files as JavaFiles;
 import java.nio.file.Paths as JavaPaths;
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import persistence.PasswordController
 import tornadofx.*
 
 class ChangePasswordScreen : View() {
     override val root = GridPane()
     val appController: AppController by inject()
+    val passwordController = PasswordController()
 
     var password1: PasswordField by singleAssign()
     var password2: PasswordField by singleAssign()
@@ -50,7 +52,7 @@ class ChangePasswordScreen : View() {
             row {
                 submit = button("Submit") {
                     setOnAction {
-                        HashUtil.setNewPassword(password1.text)
+                        passwordController.setNewPassword(password1.text)
                         appController.showHomeScreen()
 
                     }

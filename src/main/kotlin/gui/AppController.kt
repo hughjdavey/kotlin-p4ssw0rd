@@ -55,7 +55,7 @@ class AppController : Controller() {
     val passwordController = PasswordController()
     /* returns list of passwords matched by the last search, or all of them if a search was not performed */
     fun getPasswordSearchResults(): ObservableList<PasswordEntity> {
-        var passwords: ObservableList<PasswordEntity>
+        val passwords: ObservableList<PasswordEntity>
         if (lastSearch.isNotEmpty()) {
             passwords = passwordController.getPasswordList(lastSearch)
             lastSearch = ""
@@ -130,7 +130,7 @@ class AppController : Controller() {
 
     fun tryLogin(password: String) {
         runAsync {
-            HashUtil.passwordValid(password)
+            passwordController.validatePassword(password)
         } ui { successfulLogin ->
             loginScreen.clear()
 
